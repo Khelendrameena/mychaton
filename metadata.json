@@ -1,0 +1,8 @@
+{
+  "name": "ChatOn",
+  "description": "A modern random chat and video calling platform with real-time messaging, WebRTC video, and interest-based matching.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
