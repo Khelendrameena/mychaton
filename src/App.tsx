@@ -29,6 +29,41 @@ import { v4 as uuidv4 } from 'uuid';
 
 // --- Components ---
 
+const EMOJI_REACTIONS = ['😂', '❤️', '👍', '😮', '😢', '🔥', '🎉', '😍'];
+
+const EmojiPicker = ({ onSelect, onClose }: { onSelect: (emoji: string) => void; onClose: () => void }) => (
+  <motion.div
+    initial={{ scale: 0.8, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    exit={{ scale: 0.8, opacity: 0 }}
+    onClick={(e) => e.stopPropagation()}
+    className="absolute bottom-12 left-0 bg-tg-secondary border border-tg-border/50 rounded-2xl p-3 shadow-xl z-50 grid grid-cols-4 gap-2 md:grid-cols-4 w-max"
+  >
+    {EMOJI_REACTIONS.map((emoji) => (
+      <button
+        key={emoji}
+        onClick={() => {
+          onSelect(emoji);
+          onClose();
+        }}
+        className="text-xl md:text-2xl p-2 hover:bg-tg-tertiary rounded-lg transition-all hover:scale-110 active:scale-95"
+      >
+        {emoji}
+      </button>
+    ))}
+  </motion.div>
+);
+
+const ReactionBubble = ({ reaction, onClick }: { reaction: { emoji: string; count: number }; onClick: () => void }) => (
+  <button
+    onClick={onClick}
+    className="px-2 py-1 md:px-2.5 md:py-1.5 bg-tg-tertiary hover:bg-tg-tertiary/80 border border-tg-border/50 rounded-full text-xs md:text-sm flex items-center gap-1 transition-all hover:scale-105 active:scale-95"
+  >
+    <span>{reaction.emoji}</span>
+    <span className="text-tg-hint text-[10px] md:text-xs">{reaction.count > 1 ? reaction.count : ''}</span>
+  </button>
+);
+
 const SplashScreen = ({ onFinish }: { onFinish: () => void }) => {
   useEffect(() => {
     const timer = setTimeout(onFinish, 1800);
@@ -209,21 +244,21 @@ const HomeView = ({ onStart }: { onStart: (interests: string[]) => void }) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto pt-8 px-6 pb-8">
+    <div className="max-w-2xl mx-auto pt-4 xs:pt-6 sm:pt-8 px-3 xs:px-4 sm:px-6 pb-4 xs:pb-6 sm:pb-8">
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="tg-card text-center space-y-8 py-12"
+        className="tg-card text-center space-y-6 xs:space-y-8 py-8 xs:py-10 sm:py-12 px-3 xs:px-4 sm:px-6"
       >
-        <div className="space-y-3">
-          <h2 className="text-4xl font-bold">Ready to connect?</h2>
-          <p className="text-tg-hint text-lg">Join thousands of people online right now</p>
+        <div className="space-y-2 xs:space-y-3">
+          <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold">Ready to connect?</h2>
+          <p className="text-tg-hint text-sm xs:text-base sm:text-lg">Join thousands of people online right now</p>
         </div>
 
-        <div className="space-y-4 text-left">
-          <label className="text-sm font-semibold text-tg-hint ml-1 uppercase tracking-wider">Your Interests</label>
-          <div className="flex flex-wrap gap-2 min-h-[50px] p-4 bg-tg-tertiary rounded-xl border border-tg-border/50 focus-within:border-tg-blue/50 transition-all">
+        <div className="space-y-3 xs:space-y-4 text-left">
+          <label className="text-xs xs:text-sm font-semibold text-tg-hint ml-1 uppercase tracking-wider">Your Interests</label>
+          <div className="flex flex-wrap gap-1.5 xs:gap-2 min-h-[45px] xs:min-h-[50px] p-2.5 xs:p-3 sm:p-4 bg-tg-tertiary rounded-xl border border-tg-border/50 focus-within:border-tg-blue/50 transition-all">
             <AnimatePresence mode="popLayout">
               {interests.map(tag => (
                 <InterestTag key={tag} label={tag} onRemove={() => setInterests(interests.filter(t => t !== tag))} />
@@ -232,7 +267,7 @@ const HomeView = ({ onStart }: { onStart: (interests: string[]) => void }) => {
             <input 
               type="text"
               placeholder="Add interest..."
-              className="bg-transparent outline-none text-sm flex-1 min-w-[100px]"
+              className="bg-transparent outline-none text-xs xs:text-sm flex-1 min-w-[80px] xs:min-w-[100px] placeholder-tg-hint/50"
               value={newInterest}
               onChange={(e) => setNewInterest(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && addInterest()}
@@ -242,33 +277,33 @@ const HomeView = ({ onStart }: { onStart: (interests: string[]) => void }) => {
 
         <button 
           onClick={() => onStart(interests)}
-          className="tg-btn w-full text-lg py-3.5 flex items-center justify-center gap-2 group"
+          className="tg-btn w-full text-sm xs:text-base sm:text-lg py-2.5 xs:py-3 sm:py-3.5 flex items-center justify-center gap-2 group"
         >
-          <MessageSquare className="w-6 h-6 group-hover:scale-110 transition-transform" />
+          <MessageSquare className="w-4 xs:w-5 sm:w-6 h-4 xs:h-5 sm:h-6 group-hover:scale-110 transition-transform" />
           Start Chatting
         </button>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-2 xs:gap-3 sm:gap-4">
           <motion.div 
             whileHover={{ y: -4 }}
-            className="p-5 bg-tg-tertiary rounded-xl border border-tg-border/50 flex flex-col items-center gap-3"
+            className="p-2.5 xs:p-3 sm:p-5 bg-tg-tertiary rounded-xl border border-tg-border/50 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-3"
           >
-            <Shield className="w-5 h-5 text-emerald-400" />
-            <span className="text-xs font-medium text-tg-hint">Safe & Secure</span>
+            <Shield className="w-4 xs:w-5 sm:w-5 h-4 xs:h-5 sm:h-5 text-emerald-400" />
+            <span className="text-[10px] xs:text-xs sm:text-xs font-medium text-tg-hint text-center">Safe & Secure</span>
           </motion.div>
           <motion.div 
             whileHover={{ y: -4 }}
-            className="p-5 bg-tg-tertiary rounded-xl border border-tg-border/50 flex flex-col items-center gap-3"
+            className="p-2.5 xs:p-3 sm:p-5 bg-tg-tertiary rounded-xl border border-tg-border/50 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-3"
           >
-            <Search className="w-5 h-5 text-tg-blue" />
-            <span className="text-xs font-medium text-tg-hint">Interest Match</span>
+            <Search className="w-4 xs:w-5 sm:w-5 h-4 xs:h-5 sm:h-5 text-tg-blue" />
+            <span className="text-[10px] xs:text-xs sm:text-xs font-medium text-tg-hint text-center">Interest Match</span>
           </motion.div>
           <motion.div 
             whileHover={{ y: -4 }}
-            className="p-5 bg-tg-tertiary rounded-xl border border-tg-border/50 flex flex-col items-center gap-3"
+            className="p-2.5 xs:p-3 sm:p-5 bg-tg-tertiary rounded-xl border border-tg-border/50 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-3"
           >
-            <User className="w-5 h-5 text-cyan-400" />
-            <span className="text-xs font-medium text-tg-hint">10k+ Online</span>
+            <User className="w-4 xs:w-5 sm:w-5 h-4 xs:h-5 sm:h-5 text-cyan-400" />
+            <span className="text-[10px] xs:text-xs sm:text-xs font-medium text-tg-hint text-center">10k+ Online</span>
           </motion.div>
         </div>
       </motion.div>
@@ -576,50 +611,89 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-3 md:p-5 space-y-3 md:space-y-4">
+          <div className="flex-1 overflow-y-auto p-2 xs:p-3 sm:p-4 md:p-5 space-y-2 xs:space-y-3 sm:space-y-3 md:space-y-4">
             <AnimatePresence initial={false} mode="popLayout">
-              {messages.map((msg, idx) => (
-                <motion.div
-                  key={idx}
-                  layout
-                  initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.2 }}
-                  className={cn(
-                    "flex flex-col w-full",
-                    msg.senderId === userId.current ? "items-end" : "items-start"
-                  )}
-                >
-                  <div className="max-w-[90%] md:max-w-[70%] lg:max-w-[60%] group">
-                    <div
-                      className={cn(
-                        "px-4 py-2.5 rounded-2xl text-sm shadow-lg relative break-words",
-                        msg.senderId === userId.current 
-                          ? "bg-gradient-to-r from-tg-blue to-cyan-400 text-tg-bg rounded-tr-none font-medium shadow-tg-blue/30" 
-                          : "bg-tg-tertiary text-tg-text rounded-tl-none border border-tg-border/50"
+              {messages.map((msg, idx) => {
+                const reactions = msg.reactions || [];
+                const reactionGroups = reactions.reduce((acc, r) => {
+                  const existing = acc.find(g => g.emoji === r.emoji);
+                  if (existing) existing.count += r.count;
+                  else acc.push(r);
+                  return acc;
+                }, [] as typeof reactions);
+
+                return (
+                  <motion.div
+                    key={idx}
+                    layout
+                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className={cn(
+                      "flex flex-col w-full",
+                      msg.senderId === userId.current ? "items-end" : "items-start"
+                    )}
+                  >
+                    <div className="max-w-[95%] xs:max-w-[90%] sm:max-w-[85%] md:max-w-[70%] lg:max-w-[60%] group relative">
+                      <div
+                        className={cn(
+                          "px-3 xs:px-4 py-2 xs:py-2.5 rounded-2xl text-xs xs:text-sm shadow-lg relative break-words",
+                          msg.senderId === userId.current 
+                            ? "bg-gradient-to-r from-tg-blue to-cyan-400 text-tg-bg rounded-tr-none font-medium shadow-tg-blue/30" 
+                            : "bg-tg-tertiary text-tg-text rounded-tl-none border border-tg-border/50"
+                        )}
+                      >
+                        {msg.message}
+                        <div className="flex items-center justify-end gap-1 mt-1 text-xs opacity-70">
+                          <span>
+                            {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </span>
+                          {msg.senderId === userId.current && <Check className="w-3 h-3" />}
+                        </div>
+                      </div>
+
+                      {/* Reactions Display */}
+                      {reactionGroups.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-2 px-1">
+                          {reactionGroups.map((reaction) => (
+                            <ReactionBubble 
+                              key={reaction.emoji}
+                              reaction={reaction}
+                              onClick={() => {
+                                console.log('[v0] Reaction clicked:', reaction.emoji);
+                              }}
+                            />
+                          ))}
+                        </div>
                       )}
-                    >
-                      {msg.message}
-                      <div className="flex items-center justify-end gap-1 mt-1 text-xs opacity-70">
-                        <span>
-                          {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </span>
-                        {msg.senderId === userId.current && <Check className="w-3 h-3" />}
+
+                      {/* Action Buttons */}
+                      <div className="flex items-center gap-0.5 xs:gap-1 mt-1 px-1 xs:px-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button 
+                          className="p-1 xs:p-1.5 hover:bg-tg-tertiary rounded-full text-tg-hint hover:text-tg-blue text-xs transition-all" 
+                          title="Reply"
+                        >
+                          <svg className="w-3 xs:w-4 h-3 xs:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6-6m0 0l-6-6" />
+                          </svg>
+                        </button>
+                        <div className="relative">
+                          <button 
+                            className="p-1 xs:p-1.5 hover:bg-tg-tertiary rounded-full text-tg-hint hover:text-tg-blue text-xs xs:text-sm transition-all" 
+                            title="Add reaction"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              console.log('[v0] Reaction button clicked');
+                            }}
+                          >
+                            <span>➕</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1 mt-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-1.5 hover:bg-tg-tertiary rounded-full text-tg-hint hover:text-tg-blue text-xs" title="Reply">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6-6m0 0l-6-6" />
-                        </svg>
-                      </button>
-                      <button className="p-1.5 hover:bg-tg-tertiary rounded-full text-tg-hint hover:text-tg-blue text-sm" title="Reactions">
-                        <span>😊</span>
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </AnimatePresence>
             {peerTyping && (
               <motion.div 

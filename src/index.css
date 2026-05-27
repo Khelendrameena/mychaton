@@ -10,6 +10,12 @@
   --color-tg-hint: #8b92a1;
   --color-tg-border: #1f2937;
   --radius-tg: 14px;
+  
+  --breakpoint-xs: 375px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
 }
 
 @layer base {
