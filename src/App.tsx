@@ -252,7 +252,7 @@ const HomeView = ({ onStart }: { onStart: (interests: string[]) => void }) => {
         className="tg-card text-center space-y-6 xs:space-y-8 py-8 xs:py-10 sm:py-12 px-3 xs:px-4 sm:px-6"
       >
         <div className="space-y-2 xs:space-y-3">
-          <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold">Ready to connect?</h2>
+          <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold">Khel Shuru Karo? 🎮</h2>
           <p className="text-tg-hint text-sm xs:text-base sm:text-lg">Join thousands of people online right now</p>
         </div>
 
@@ -280,7 +280,7 @@ const HomeView = ({ onStart }: { onStart: (interests: string[]) => void }) => {
           className="tg-btn w-full text-sm xs:text-base sm:text-lg py-2.5 xs:py-3 sm:py-3.5 flex items-center justify-center gap-2 group"
         >
           <MessageSquare className="w-4 xs:w-5 sm:w-6 h-4 xs:h-5 sm:h-6 group-hover:scale-110 transition-transform" />
-          Start Chatting
+          Khel Shuru Karo
         </button>
 
         <div className="grid grid-cols-3 gap-2 xs:gap-3 sm:gap-4">
