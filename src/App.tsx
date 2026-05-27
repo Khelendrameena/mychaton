@@ -316,6 +316,7 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
   const [match, setMatch] = useState<MatchInfo | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
+  const [reactionMessageIdx, setReactionMessageIdx] = useState<number | null>(null);
   const [isTyping, setIsTyping] = useState(false);
   const [peerTyping, setPeerTyping] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -488,7 +489,7 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
   };
 
   return (
-    <div className="h-[calc(100vh-64px)] flex flex-col overflow-hidden bg-tg-bg">
+    <div className="h-screen w-screen flex flex-col overflow-hidden bg-tg-bg fixed top-0 left-0">
       {/* Search Overlay */}
       {status === 'searching' && (
         <motion.div 
@@ -578,9 +579,9 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
         </AnimatePresence>
 
         {/* Chat Section */}
-        <div className="flex-1 bg-tg-bg flex flex-col relative">
+        <div className="flex-1 bg-tg-bg flex flex-col relative h-full min-h-0">
           {/* Chat Header */}
-          <div className="p-3 md:p-5 border-b border-tg-border/30 flex items-center justify-between glass z-10">
+          <div className="p-3 md:p-5 border-b border-tg-border/30 flex items-center justify-between glass z-20 flex-shrink-0">
             <div className="flex items-center gap-2 md:gap-3 min-w-0">
               <motion.div 
                 initial={{ scale: 0 }}
@@ -600,10 +601,17 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
                 </motion.p>
               </div>
             </div>
-            <div className="flex items-center gap-1 flex-shrink-0">
-              <button onClick={() => handleSkip()} className="p-2 md:p-2.5 hover:bg-red-500/10 rounded-full text-tg-hint transition-all hover:text-red-400" title="Skip to next chat">
-                <SkipForward className="w-4 md:w-5 h-4 md:h-5" />
-              </button>
+            <div className="flex items-center gap-1.5 md:gap-2 flex-shrink-0">
+              <motion.button 
+                onClick={() => handleSkip()}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-3 md:px-4 py-1.5 md:py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-full transition-all font-semibold text-xs md:text-sm flex items-center gap-1.5 border border-red-500/30 hover:border-red-500/50" 
+                title="Skip to next chat"
+              >
+                <SkipForward className="w-3.5 md:w-4 h-3.5 md:h-4" />
+                <span className="hidden xs:inline">Skip</span>
+              </motion.button>
               <button className="p-2 md:p-2.5 hover:bg-tg-blue/15 rounded-full text-tg-hint transition-all hover:text-tg-blue" title="More options">
                 <MoreVertical className="w-4 md:w-5 h-4 md:h-5" />
               </button>
@@ -611,7 +619,7 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-2 xs:p-3 sm:p-4 md:p-5 space-y-2 xs:space-y-3 sm:space-y-3 md:space-y-4">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden p-2 xs:p-3 sm:p-4 md:p-5 space-y-2 xs:space-y-3 sm:space-y-3 md:space-y-4 min-h-0">
             <AnimatePresence initial={false} mode="popLayout">
               {messages.map((msg, idx) => {
                 const reactions = msg.reactions || [];
@@ -670,7 +678,7 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
                       {/* Action Buttons */}
                       <div className="flex items-center gap-0.5 xs:gap-1 mt-1 px-1 xs:px-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button 
-                          className="p-1 xs:p-1.5 hover:bg-tg-tertiary rounded-full text-tg-hint hover:text-tg-blue text-xs transition-all" 
+                          className="p-1 xs:p-1.5 hover:bg-tg-tertiary rounded-full text-tg-hint hover:text-tg-blue text-xs transition-all hover:scale-110 active:scale-95" 
                           title="Reply"
                         >
                           <svg className="w-3 xs:w-4 h-3 xs:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -678,16 +686,38 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
                           </svg>
                         </button>
                         <div className="relative">
-                          <button 
-                            className="p-1 xs:p-1.5 hover:bg-tg-tertiary rounded-full text-tg-hint hover:text-tg-blue text-xs xs:text-sm transition-all" 
+                          <motion.button 
+                            className="p-1 xs:p-1.5 hover:bg-tg-tertiary rounded-full text-tg-hint hover:text-tg-blue text-xs xs:text-sm transition-all hover:scale-110 active:scale-95" 
                             title="Add reaction"
                             onClick={(e) => {
                               e.stopPropagation();
-                              console.log('[v0] Reaction button clicked');
+                              setReactionMessageIdx(reactionMessageIdx === idx ? null : idx);
                             }}
+                            whileHover={{ scale: 1.15 }}
+                            whileTap={{ scale: 0.9 }}
                           >
                             <span>➕</span>
-                          </button>
+                          </motion.button>
+                          {reactionMessageIdx === idx && (
+                            <EmojiPicker 
+                              onSelect={(emoji) => {
+                                setMessages(prev => prev.map((m, i) => {
+                                  if (i === idx) {
+                                    const reactions = m.reactions || [];
+                                    const existing = reactions.find(r => r.emoji === emoji);
+                                    if (existing) {
+                                      existing.count += 1;
+                                    } else {
+                                      reactions.push({ emoji, count: 1, users: [userId.current] });
+                                    }
+                                    return { ...m, reactions };
+                                  }
+                                  return m;
+                                }));
+                              }}
+                              onClose={() => setReactionMessageIdx(null)}
+                            />
+                          )}
                         </div>
                       </div>
                     </div>
@@ -725,7 +755,7 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
           </div>
 
           {/* Chat Input */}
-          <div className="p-3 md:p-5 bg-tg-bg border-t border-tg-border/30">
+          <div className="p-3 md:p-5 bg-tg-bg border-t border-tg-border/30 flex-shrink-0 sticky bottom-0 z-10">
             <div className="flex items-end gap-2 md:gap-3 bg-tg-tertiary rounded-2xl px-2.5 md:px-4 py-2 border border-tg-border/50 focus-within:border-tg-blue/50 transition-all shadow-lg">
               <button className="p-2 md:p-2.5 text-tg-hint hover:text-tg-blue transition-colors hover:bg-tg-blue/10 rounded-lg flex-shrink-0" title="Attach file">
                 <Paperclip className="w-4 md:w-5 h-4 md:h-5" />
@@ -786,12 +816,12 @@ export default function App() {
   if (!profile) return <ProfileSetupView onComplete={setProfile} />;
 
   return (
-    <div className="min-h-screen bg-tg-bg text-tg-text">
+    <div className="h-screen w-screen bg-tg-bg text-tg-text flex flex-col overflow-hidden fixed top-0 left-0">
       <Header 
         onOpenSettings={() => {}} 
       />
       
-      <main>
+      <main className="flex-1 overflow-hidden">
         <AnimatePresence mode="wait">
           {view === 'home' && (
             <motion.div
@@ -799,6 +829,7 @@ export default function App() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              className="h-full overflow-y-auto"
             >
               <HomeView onStart={(i) => {
                 setInterests(i);
@@ -813,6 +844,7 @@ export default function App() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
+              className="h-full"
             >
               <ChatView 
                 interests={interests} 
