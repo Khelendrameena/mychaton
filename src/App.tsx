@@ -511,7 +511,7 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
       )}
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col md:flex-row relative w-full min-h-0">
+      <div className="flex-1 flex flex-col relative w-full min-h-0 overflow-hidden">
         
         {/* Video Overlay (Telegram style floating or side) */}
         <AnimatePresence>
@@ -579,7 +579,7 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
         </AnimatePresence>
 
         {/* Chat Section */}
-        <div className="flex-1 bg-tg-bg flex flex-col relative h-full w-full min-h-0">
+        <div className="flex-1 bg-tg-bg flex flex-col relative w-full min-h-0 overflow-hidden">
           {/* Chat Header */}
           <div className="p-3 md:p-5 border-b border-tg-border/30 flex items-center justify-between glass z-20 flex-shrink-0">
             <div className="flex items-center gap-2 md:gap-3 min-w-0">
