@@ -489,7 +489,7 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden bg-tg-bg fixed top-0 left-0">
+    <div className="w-full h-full flex flex-col overflow-hidden bg-tg-bg">
       {/* Search Overlay */}
       {status === 'searching' && (
         <motion.div 
@@ -511,7 +511,7 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
       )}
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col md:flex-row relative overflow-hidden">
+      <div className="flex-1 flex flex-col md:flex-row relative w-full min-h-0">
         
         {/* Video Overlay (Telegram style floating or side) */}
         <AnimatePresence>
@@ -579,7 +579,7 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
         </AnimatePresence>
 
         {/* Chat Section */}
-        <div className="flex-1 bg-tg-bg flex flex-col relative h-full min-h-0">
+        <div className="flex-1 bg-tg-bg flex flex-col relative h-full w-full min-h-0">
           {/* Chat Header */}
           <div className="p-3 md:p-5 border-b border-tg-border/30 flex items-center justify-between glass z-20 flex-shrink-0">
             <div className="flex items-center gap-2 md:gap-3 min-w-0">
@@ -619,7 +619,7 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto overflow-x-hidden p-2 xs:p-3 sm:p-4 md:p-5 space-y-2 xs:space-y-3 sm:space-y-3 md:space-y-4 min-h-0">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden p-2 xs:p-3 sm:p-4 md:p-5 space-y-2 xs:space-y-3 sm:space-y-3 md:space-y-4 min-h-0 w-full">
             <AnimatePresence initial={false} mode="popLayout">
               {messages.map((msg, idx) => {
                 const reactions = msg.reactions || [];
@@ -755,7 +755,7 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
           </div>
 
           {/* Chat Input */}
-          <div className="p-3 md:p-5 bg-tg-bg border-t border-tg-border/30 flex-shrink-0 sticky bottom-0 z-10">
+          <div className="p-3 md:p-5 bg-tg-bg border-t border-tg-border/30 flex-shrink-0 z-10 w-full">
             <div className="flex items-end gap-2 md:gap-3 bg-tg-tertiary rounded-2xl px-2.5 md:px-4 py-2 border border-tg-border/50 focus-within:border-tg-blue/50 transition-all shadow-lg">
               <button className="p-2 md:p-2.5 text-tg-hint hover:text-tg-blue transition-colors hover:bg-tg-blue/10 rounded-lg flex-shrink-0" title="Attach file">
                 <Paperclip className="w-4 md:w-5 h-4 md:h-5" />
