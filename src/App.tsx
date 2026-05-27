@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Video, 
   MessageSquare, 
   SkipForward, 
   User, 
@@ -11,15 +10,12 @@ import {
   Send, 
   Mic, 
   MicOff, 
-  VideoOff, 
   Camera,
   Flag,
   X,
   Smile,
   Image as ImageIcon,
   LogOut,
-  LayoutDashboard,
-  Phone,
   Paperclip,
   MoreVertical,
   Check,
@@ -165,22 +161,19 @@ const ProfileSetupView = ({ onComplete }: { onComplete: (data: { name: string; g
   );
 };
 
-const Header = ({ onOpenSettings, onOpenAdmin }: { onOpenSettings: () => void; onOpenAdmin: () => void }) => (
-  <header className="h-16 border-b border-tg-border/30 flex items-center justify-between px-6 sticky top-0 z-40 glass">
-    <div className="flex items-center gap-3">
-      <div className="w-9 h-9 bg-gradient-to-br from-tg-blue to-cyan-400 rounded-xl flex items-center justify-center shadow-lg shadow-tg-blue/20">
+const Header = ({ onOpenSettings }: { onOpenSettings: () => void }) => (
+  <header className="h-16 border-b border-tg-border/30 flex items-center justify-between px-4 md:px-6 sticky top-0 z-40 glass">
+    <div className="flex items-center gap-2 md:gap-3">
+      <div className="w-9 h-9 bg-gradient-to-br from-tg-blue to-cyan-400 rounded-xl flex items-center justify-center shadow-lg shadow-tg-blue/20 flex-shrink-0">
         <MessageSquare className="w-5 h-5 text-tg-bg fill-current" />
       </div>
-      <span className="font-bold text-xl tracking-tight">ChatOn</span>
+      <span className="font-bold text-lg md:text-xl tracking-tight">ChatOn</span>
     </div>
     <div className="flex items-center gap-2">
-      <button onClick={onOpenAdmin} className="p-2.5 hover:bg-tg-blue/10 rounded-full transition-colors text-tg-hint hover:text-tg-blue">
-        <LayoutDashboard className="w-5 h-5" />
-      </button>
       <button onClick={onOpenSettings} className="p-2.5 hover:bg-tg-blue/10 rounded-full transition-colors text-tg-hint hover:text-tg-blue">
         <Settings className="w-5 h-5" />
       </button>
-      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-tg-blue via-cyan-400 to-blue-500 flex items-center justify-center text-xs font-bold text-tg-bg shadow-lg shadow-tg-blue/20">
+      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-tg-blue via-cyan-400 to-blue-500 flex items-center justify-center text-xs font-bold text-tg-bg shadow-lg shadow-tg-blue/20 flex-shrink-0">
         JD
       </div>
     </div>
@@ -552,48 +545,38 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
         {/* Chat Section */}
         <div className="flex-1 bg-tg-bg flex flex-col relative">
           {/* Chat Header */}
-          <div className="p-5 border-b border-tg-border/30 flex items-center justify-between glass z-10">
-            <div className="flex items-center gap-3">
+          <div className="p-3 md:p-5 border-b border-tg-border/30 flex items-center justify-between glass z-10">
+            <div className="flex items-center gap-2 md:gap-3 min-w-0">
               <motion.div 
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="w-10 h-10 rounded-full bg-gradient-to-br from-tg-blue/30 to-cyan-400/20 flex items-center justify-center border border-tg-blue/30"
+                className="w-10 h-10 rounded-full bg-gradient-to-br from-tg-blue/30 to-cyan-400/20 flex items-center justify-center border border-tg-blue/30 flex-shrink-0"
               >
-                <User className="w-5 h-5 text-tg-blue" />
+                <User className="w-4 md:w-5 h-4 md:h-5 text-tg-blue" />
               </motion.div>
-              <div>
-                <h4 className="font-semibold text-sm">Stranger</h4>
+              <div className="min-w-0">
+                <h4 className="font-semibold text-sm truncate">Stranger</h4>
                 <motion.p 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="text-[11px] text-emerald-400 uppercase font-bold tracking-widest"
+                  className="text-[10px] md:text-[11px] text-emerald-400 uppercase font-bold tracking-widest"
                 >
                   ● Online
                 </motion.p>
               </div>
             </div>
-            <div className="flex items-center gap-1">
-              <button 
-                onClick={startVideoCall}
-                className="p-2.5 hover:bg-tg-blue/15 rounded-full text-tg-blue transition-all hover:text-cyan-400"
-                title="Start video call"
-              >
-                <Video className="w-5 h-5" />
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <button onClick={() => handleSkip()} className="p-2 md:p-2.5 hover:bg-red-500/10 rounded-full text-tg-hint transition-all hover:text-red-400" title="Skip to next chat">
+                <SkipForward className="w-4 md:w-5 h-4 md:h-5" />
               </button>
-              <button className="p-2.5 hover:bg-tg-blue/15 rounded-full text-tg-blue transition-all hover:text-cyan-400" title="Call">
-                <Phone className="w-5 h-5" />
-              </button>
-              <button onClick={() => handleSkip()} className="p-2.5 hover:bg-red-500/10 rounded-full text-tg-hint transition-all hover:text-red-400" title="Skip">
-                <SkipForward className="w-5 h-5" />
-              </button>
-              <button className="p-2.5 hover:bg-tg-blue/15 rounded-full text-tg-hint transition-all hover:text-tg-blue" title="More options">
-                <MoreVertical className="w-5 h-5" />
+              <button className="p-2 md:p-2.5 hover:bg-tg-blue/15 rounded-full text-tg-hint transition-all hover:text-tg-blue" title="More options">
+                <MoreVertical className="w-4 md:w-5 h-4 md:h-5" />
               </button>
             </div>
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-5 space-y-4">
+          <div className="flex-1 overflow-y-auto p-3 md:p-5 space-y-3 md:space-y-4">
             <AnimatePresence initial={false} mode="popLayout">
               {messages.map((msg, idx) => (
                 <motion.div
@@ -603,18 +586,37 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.2 }}
                   className={cn(
-                    "max-w-[75%] md:max-w-[60%] px-4 py-2.5 rounded-2xl text-sm shadow-lg relative",
-                    msg.senderId === userId.current 
-                      ? "bg-gradient-to-r from-tg-blue to-cyan-400 text-tg-bg ml-auto rounded-tr-none font-medium shadow-tg-blue/30" 
-                      : "bg-tg-tertiary text-tg-text mr-auto rounded-tl-none border border-tg-border/50"
+                    "flex flex-col w-full",
+                    msg.senderId === userId.current ? "items-end" : "items-start"
                   )}
                 >
-                  {msg.message}
-                  <div className="flex items-center justify-end gap-1 mt-1 text-xs opacity-70">
-                    <span>
-                      {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                    {msg.senderId === userId.current && <Check className="w-3 h-3" />}
+                  <div className="max-w-[90%] md:max-w-[70%] lg:max-w-[60%] group">
+                    <div
+                      className={cn(
+                        "px-4 py-2.5 rounded-2xl text-sm shadow-lg relative break-words",
+                        msg.senderId === userId.current 
+                          ? "bg-gradient-to-r from-tg-blue to-cyan-400 text-tg-bg rounded-tr-none font-medium shadow-tg-blue/30" 
+                          : "bg-tg-tertiary text-tg-text rounded-tl-none border border-tg-border/50"
+                      )}
+                    >
+                      {msg.message}
+                      <div className="flex items-center justify-end gap-1 mt-1 text-xs opacity-70">
+                        <span>
+                          {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                        {msg.senderId === userId.current && <Check className="w-3 h-3" />}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 mt-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button className="p-1.5 hover:bg-tg-tertiary rounded-full text-tg-hint hover:text-tg-blue text-xs" title="Reply">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6-6m0 0l-6-6" />
+                        </svg>
+                      </button>
+                      <button className="p-1.5 hover:bg-tg-tertiary rounded-full text-tg-hint hover:text-tg-blue text-sm" title="Reactions">
+                        <span>😊</span>
+                      </button>
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -649,10 +651,10 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
           </div>
 
           {/* Chat Input */}
-          <div className="p-5 bg-tg-bg border-t border-tg-border/30">
-            <div className="flex items-end gap-3 bg-tg-tertiary rounded-2xl px-3 py-2 border border-tg-border/50 focus-within:border-tg-blue/50 transition-all shadow-lg">
-              <button className="p-2.5 text-tg-hint hover:text-tg-blue transition-colors hover:bg-tg-blue/10 rounded-lg" title="Attach file">
-                <Paperclip className="w-5 h-5" />
+          <div className="p-3 md:p-5 bg-tg-bg border-t border-tg-border/30">
+            <div className="flex items-end gap-2 md:gap-3 bg-tg-tertiary rounded-2xl px-2.5 md:px-4 py-2 border border-tg-border/50 focus-within:border-tg-blue/50 transition-all shadow-lg">
+              <button className="p-2 md:p-2.5 text-tg-hint hover:text-tg-blue transition-colors hover:bg-tg-blue/10 rounded-lg flex-shrink-0" title="Attach file">
+                <Paperclip className="w-4 md:w-5 h-4 md:h-5" />
               </button>
               <textarea
                 rows={1}
@@ -670,8 +672,8 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
                   }
                 }}
               />
-              <button className="p-2.5 text-tg-hint hover:text-tg-blue transition-colors hover:bg-tg-blue/10 rounded-lg" title="Emoji">
-                <Sticker className="w-5 h-5" />
+              <button className="p-2 md:p-2.5 text-tg-hint hover:text-tg-blue transition-colors hover:bg-tg-blue/10 rounded-lg flex-shrink-0" title="Emoji">
+                <Sticker className="w-4 md:w-5 h-4 md:h-5" />
               </button>
               <motion.button 
                 onClick={handleSendMessage}
@@ -679,108 +681,18 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
                 whileHover={inputText.trim() ? { scale: 1.05 } : {}}
                 whileTap={inputText.trim() ? { scale: 0.95 } : {}}
                 className={cn(
-                  "p-2.5 rounded-lg transition-all",
+                  "p-2 md:p-2.5 rounded-lg transition-all flex-shrink-0",
                   inputText.trim() ? "bg-gradient-to-r from-tg-blue to-cyan-400 text-tg-bg shadow-lg shadow-tg-blue/30" : "text-tg-hint"
                 )}
                 title={inputText.trim() ? "Send message" : "Send voice"}
               >
-                {inputText.trim() ? <Send className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                {inputText.trim() ? <Send className="w-4 md:w-5 h-4 md:h-5" /> : <Mic className="w-4 md:w-5 h-4 md:h-5" />}
               </motion.button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
-};
-
-const AdminDashboard = ({ onClose }: { onClose: () => void }) => {
-  const [stats, setStats] = useState({ users: 0, reports: 0, online: 0 });
-
-  useEffect(() => {
-    fetch('/api/stats').then(res => res.json()).then(setStats);
-  }, []);
-
-  return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-tg-bg/80 backdrop-blur-lg flex items-center justify-center p-6"
-    >
-      <motion.div 
-        initial={{ scale: 0.85, opacity: 0, y: 20 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="w-full max-w-5xl bg-tg-secondary rounded-2xl overflow-hidden shadow-2xl border border-tg-border/50"
-      >
-        <div className="p-6 border-b border-tg-border/30 flex items-center justify-between bg-gradient-to-r from-tg-blue/10 to-cyan-400/5">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-tg-blue/20 rounded-lg">
-              <LayoutDashboard className="w-5 h-5 text-tg-blue" />
-            </div>
-            <h2 className="text-2xl font-bold">Admin Dashboard</h2>
-          </div>
-          <motion.button 
-            whileHover={{ rotate: 90 }}
-            onClick={onClose} 
-            className="p-2 hover:bg-red-500/10 rounded-full transition-colors"
-          >
-            <X className="w-6 h-6" />
-          </motion.button>
-        </div>
-        
-        <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { label: 'Total Users', value: stats.users, color: 'from-tg-blue to-cyan-400' },
-            { label: 'Active Reports', value: stats.reports, color: 'from-red-500 to-orange-500' },
-            { label: 'Online Now', value: stats.online, color: 'from-emerald-400 to-teal-500' }
-          ].map((stat, i) => (
-            <motion.div 
-              key={i}
-              whileHover={{ y: -4 }}
-              className="tg-card bg-gradient-to-br from-tg-tertiary to-tg-secondary space-y-3"
-            >
-              <p className="text-tg-hint text-xs uppercase font-bold tracking-wider">{stat.label}</p>
-              <p className={`text-5xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
-                {stat.value}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="p-8 pt-0">
-          <div className="tg-card bg-gradient-to-br from-tg-tertiary to-tg-secondary">
-            <h3 className="font-bold mb-5 text-lg flex items-center gap-2">
-              <Shield className="w-5 h-5 text-red-400" />
-              Recent Reports
-            </h3>
-            <div className="space-y-3">
-              {[1, 2, 3].map(i => (
-                <motion.div 
-                  key={i}
-                  whileHover={{ x: 4 }}
-                  className="flex items-center justify-between p-4 bg-tg-secondary rounded-xl border border-tg-border/50 hover:border-red-500/30 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center border border-red-500/30">
-                      <Shield className="w-5 h-5 text-red-400" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium">Inappropriate behavior</p>
-                      <p className="text-xs text-tg-hint">User ID: user_8273... • 2 mins ago</p>
-                    </div>
-                  </div>
-                  <button className="text-xs font-semibold text-tg-blue hover:bg-tg-blue/10 px-3 py-1.5 rounded-lg transition-colors">
-                    View
-                  </button>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
   );
 };
 
@@ -803,7 +715,6 @@ export default function App() {
     <div className="min-h-screen bg-tg-bg text-tg-text">
       <Header 
         onOpenSettings={() => {}} 
-        onOpenAdmin={() => setView('admin')} 
       />
       
       <main>
@@ -837,8 +748,6 @@ export default function App() {
           )}
         </AnimatePresence>
       </main>
-
-      {view === 'admin' && <AdminDashboard onClose={() => setView('home')} />}
     </div>
   );
 }
