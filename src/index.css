@@ -2,34 +2,65 @@
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --color-tg-blue: #2481cc;
-  --color-tg-bg: #0e1621;
-  --color-tg-secondary: #17212b;
-  --color-tg-text: #ffffff;
-  --color-tg-hint: #708499;
-  --radius-tg: 12px;
+  --color-tg-blue: #00d4ff;
+  --color-tg-bg: #0a0e1a;
+  --color-tg-secondary: #131829;
+  --color-tg-tertiary: #1a1f2e;
+  --color-tg-text: #f0f2f5;
+  --color-tg-hint: #8b92a1;
+  --color-tg-border: #1f2937;
+  --radius-tg: 14px;
 }
 
 @layer base {
   body {
     @apply bg-tg-bg text-tg-text font-sans antialiased;
   }
+  
+  * {
+    @apply transition-colors duration-200;
+  }
 }
 
 .glass {
-  background-color: rgba(255, 255, 255, 0.1);
+  background: rgba(26, 31, 46, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 212, 255, 0.1);
+}
+
+.glass-light {
+  background: rgba(19, 24, 41, 0.4);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .tg-card {
-  @apply bg-tg-secondary rounded-tg p-4 shadow-lg;
+  @apply bg-tg-secondary rounded-tg p-5 shadow-lg border border-tg-border/50;
 }
 
 .tg-btn {
-  @apply bg-tg-blue hover:bg-tg-blue/90 text-white font-medium py-2 px-6 rounded-full transition-all active:scale-95;
+  @apply bg-tg-blue hover:bg-cyan-400 text-tg-bg font-semibold py-2.5 px-6 rounded-full transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-tg-blue/20;
+}
+
+.tg-btn-outline {
+  @apply bg-transparent border-2 border-tg-blue text-tg-blue hover:bg-tg-blue/10 font-semibold py-2.5 px-6 rounded-full transition-all active:scale-95 disabled:opacity-50;
 }
 
 .mirror {
   transform: scaleX(-1);
+}
+
+@supports (animation: fade 1s) {
+  .animate-fade {
+    animation: fade 0.2s ease-out;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

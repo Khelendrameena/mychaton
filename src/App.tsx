@@ -35,7 +35,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const SplashScreen = ({ onFinish }: { onFinish: () => void }) => {
   useEffect(() => {
-    const timer = setTimeout(onFinish, 2000);
+    const timer = setTimeout(onFinish, 1800);
     return () => clearTimeout(timer);
   }, [onFinish]);
 
@@ -43,52 +43,60 @@ const SplashScreen = ({ onFinish }: { onFinish: () => void }) => {
     <motion.div 
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-tg-bg"
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-tg-bg via-tg-bg to-tg-tertiary"
     >
       <motion.div
-        initial={{ scale: 0.5, opacity: 0 }}
+        initial={{ scale: 0.6, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="w-24 h-24 bg-tg-blue rounded-3xl flex items-center justify-center shadow-2xl shadow-tg-blue/20"
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="w-24 h-24 bg-gradient-to-br from-tg-blue to-cyan-400 rounded-3xl flex items-center justify-center shadow-2xl shadow-tg-blue/30"
       >
-        <MessageSquare className="w-12 h-12 text-white fill-white" />
+        <MessageSquare className="w-12 h-12 text-tg-bg fill-current" />
       </motion.div>
       <motion.h1 
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        className="mt-6 text-3xl font-bold tracking-tight"
+        transition={{ delay: 0.2, duration: 0.5 }}
+        className="mt-8 text-4xl font-bold tracking-tight"
       >
         ChatOn
       </motion.h1>
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: 100 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+        className="mt-6 h-1 bg-gradient-to-r from-transparent via-tg-blue to-transparent rounded-full"
+      />
     </motion.div>
   );
 };
 
 const AgeVerificationView = ({ onConfirm }: { onConfirm: () => void }) => (
-  <div className="min-h-screen flex items-center justify-center p-6 bg-tg-bg">
+  <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-tg-bg via-tg-secondary to-tg-tertiary">
     <motion.div 
-      initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      className="max-w-md w-full tg-card text-center space-y-6 py-10"
+      initial={{ scale: 0.85, opacity: 0, y: 20 }}
+      animate={{ scale: 1, opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="max-w-md w-full tg-card text-center space-y-8 py-12"
     >
-      <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto">
-        <Shield className="w-10 h-10 text-red-500" />
+      <div className="w-20 h-20 bg-red-500/15 rounded-full flex items-center justify-center mx-auto">
+        <Shield className="w-10 h-10 text-red-400" />
       </div>
-      <div className="space-y-2">
-        <h2 className="text-2xl font-bold">Age Verification</h2>
-        <p className="text-tg-hint text-sm px-4">
+      <div className="space-y-3">
+        <h2 className="text-3xl font-bold">Age Verification</h2>
+        <p className="text-tg-hint text-sm px-4 leading-relaxed">
           You must be at least 18 years old to use ChatOn. By continuing, you confirm that you are of legal age.
         </p>
       </div>
       <div className="pt-4 space-y-3">
         <button 
           onClick={onConfirm}
-          className="w-full py-3 bg-tg-blue hover:bg-tg-blue/90 rounded-xl font-bold transition-all active:scale-95"
+          className="tg-btn w-full"
         >
           I am 18 or older
         </button>
-        <button className="w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl font-medium text-tg-hint transition-all">
+        <button className="w-full py-3 bg-tg-tertiary hover:bg-tg-tertiary/80 rounded-xl font-medium text-tg-hint transition-all border border-tg-border/50">
           Exit
         </button>
       </div>
@@ -101,39 +109,40 @@ const ProfileSetupView = ({ onComplete }: { onComplete: (data: { name: string; g
   const [gender, setGender] = useState('');
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-tg-bg">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-tg-bg via-tg-secondary to-tg-tertiary">
       <motion.div 
         initial={{ x: 20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        className="max-w-md w-full tg-card space-y-8 py-10"
+        transition={{ duration: 0.3 }}
+        className="max-w-md w-full tg-card space-y-8 py-12"
       >
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold">Create Profile</h2>
-          <p className="text-tg-hint text-sm">Tell us a bit about yourself</p>
+          <h2 className="text-3xl font-bold">Create Profile</h2>
+          <p className="text-tg-hint text-sm">Tell us about yourself</p>
         </div>
 
         <div className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-tg-hint uppercase tracking-wider ml-1">Your Name</label>
+          <div className="space-y-2.5">
+            <label className="text-xs font-semibold text-tg-hint uppercase tracking-widest ml-1">Your Name</label>
             <input 
               type="text"
               placeholder="Enter your name"
-              className="w-full bg-tg-bg border border-white/5 rounded-xl px-4 py-3 outline-none focus:border-tg-blue transition-colors"
+              className="w-full bg-tg-tertiary border border-tg-border/50 rounded-xl px-4 py-3 outline-none focus:border-tg-blue focus:shadow-lg focus:shadow-tg-blue/20 transition-all"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-tg-hint uppercase tracking-wider ml-1">Gender</label>
+          <div className="space-y-2.5">
+            <label className="text-xs font-semibold text-tg-hint uppercase tracking-widest ml-1">Gender</label>
             <div className="grid grid-cols-3 gap-3">
               {['Male', 'Female', 'Other'].map(g => (
                 <button
                   key={g}
                   onClick={() => setGender(g)}
                   className={cn(
-                    "py-2 rounded-xl border transition-all text-sm font-medium",
-                    gender === g ? "bg-tg-blue border-tg-blue text-white" : "bg-tg-bg border-white/5 text-tg-hint hover:border-white/20"
+                    "py-2.5 rounded-xl border font-medium transition-all text-sm",
+                    gender === g ? "bg-tg-blue border-tg-blue text-tg-bg shadow-lg shadow-tg-blue/30" : "bg-tg-tertiary border-tg-border/50 text-tg-hint hover:border-tg-blue/30"
                   )}
                 >
                   {g}
@@ -146,7 +155,7 @@ const ProfileSetupView = ({ onComplete }: { onComplete: (data: { name: string; g
         <button 
           disabled={!name || !gender}
           onClick={() => onComplete({ name, gender })}
-          className="w-full py-4 bg-tg-blue hover:bg-tg-blue/90 disabled:opacity-50 disabled:grayscale rounded-2xl font-bold text-lg shadow-xl shadow-tg-blue/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+          className="tg-btn w-full text-base py-3 flex items-center justify-center gap-2"
         >
           Continue
           <ChevronRight className="w-5 h-5" />
@@ -157,21 +166,21 @@ const ProfileSetupView = ({ onComplete }: { onComplete: (data: { name: string; g
 };
 
 const Header = ({ onOpenSettings, onOpenAdmin }: { onOpenSettings: () => void; onOpenAdmin: () => void }) => (
-  <header className="h-16 border-b border-white/5 flex items-center justify-between px-6 sticky top-0 z-40 bg-tg-bg/80 backdrop-blur-md">
-    <div className="flex items-center gap-2">
-      <div className="w-8 h-8 bg-tg-blue rounded-lg flex items-center justify-center">
-        <MessageSquare className="w-5 h-5 text-white" />
+  <header className="h-16 border-b border-tg-border/30 flex items-center justify-between px-6 sticky top-0 z-40 glass">
+    <div className="flex items-center gap-3">
+      <div className="w-9 h-9 bg-gradient-to-br from-tg-blue to-cyan-400 rounded-xl flex items-center justify-center shadow-lg shadow-tg-blue/20">
+        <MessageSquare className="w-5 h-5 text-tg-bg fill-current" />
       </div>
       <span className="font-bold text-xl tracking-tight">ChatOn</span>
     </div>
-    <div className="flex items-center gap-4">
-      <button onClick={onOpenAdmin} className="p-2 hover:bg-white/5 rounded-full transition-colors text-tg-hint">
+    <div className="flex items-center gap-2">
+      <button onClick={onOpenAdmin} className="p-2.5 hover:bg-tg-blue/10 rounded-full transition-colors text-tg-hint hover:text-tg-blue">
         <LayoutDashboard className="w-5 h-5" />
       </button>
-      <button onClick={onOpenSettings} className="p-2 hover:bg-white/5 rounded-full transition-colors text-tg-hint">
+      <button onClick={onOpenSettings} className="p-2.5 hover:bg-tg-blue/10 rounded-full transition-colors text-tg-hint hover:text-tg-blue">
         <Settings className="w-5 h-5" />
       </button>
-      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-tg-blue to-indigo-500 flex items-center justify-center text-xs font-bold">
+      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-tg-blue via-cyan-400 to-blue-500 flex items-center justify-center text-xs font-bold text-tg-bg shadow-lg shadow-tg-blue/20">
         JD
       </div>
     </div>
@@ -179,14 +188,20 @@ const Header = ({ onOpenSettings, onOpenAdmin }: { onOpenSettings: () => void; o
 );
 
 const InterestTag = ({ label, onRemove }: { label: string; onRemove?: () => void; key?: string }) => (
-  <span className="inline-flex items-center gap-1 px-3 py-1 bg-tg-blue/10 text-tg-blue rounded-full text-sm border border-tg-blue/20">
+  <motion.span 
+    layout
+    initial={{ scale: 0.8, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    exit={{ scale: 0.8, opacity: 0 }}
+    className="inline-flex items-center gap-2 px-3 py-1.5 bg-tg-blue/15 text-tg-blue rounded-full text-sm border border-tg-blue/30 hover:border-tg-blue/60 transition-all"
+  >
     {label}
     {onRemove && (
-      <button onClick={onRemove} className="hover:text-tg-blue/80">
-        <X className="w-3 h-3" />
+      <button onClick={onRemove} className="hover:text-tg-blue/60 p-0.5 hover:bg-tg-blue/10 rounded-full transition-colors">
+        <X className="w-3.5 h-3.5" />
       </button>
     )}
-  </span>
+  </motion.span>
 );
 
 const HomeView = ({ onStart }: { onStart: (interests: string[]) => void }) => {
@@ -201,23 +216,26 @@ const HomeView = ({ onStart }: { onStart: (interests: string[]) => void }) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto pt-12 px-6">
+    <div className="max-w-2xl mx-auto pt-8 px-6 pb-8">
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.3 }}
         className="tg-card text-center space-y-8 py-12"
       >
-        <div className="space-y-2">
-          <h2 className="text-3xl font-bold">Ready to connect?</h2>
-          <p className="text-tg-hint">Join thousands of people online right now.</p>
+        <div className="space-y-3">
+          <h2 className="text-4xl font-bold">Ready to connect?</h2>
+          <p className="text-tg-hint text-lg">Join thousands of people online right now</p>
         </div>
 
         <div className="space-y-4 text-left">
-          <label className="text-sm font-medium text-tg-hint ml-1">Your Interests</label>
-          <div className="flex flex-wrap gap-2 min-h-[40px] p-3 bg-tg-bg rounded-xl border border-white/5">
-            {interests.map(tag => (
-              <InterestTag key={tag} label={tag} onRemove={() => setInterests(interests.filter(t => t !== tag))} />
-            ))}
+          <label className="text-sm font-semibold text-tg-hint ml-1 uppercase tracking-wider">Your Interests</label>
+          <div className="flex flex-wrap gap-2 min-h-[50px] p-4 bg-tg-tertiary rounded-xl border border-tg-border/50 focus-within:border-tg-blue/50 transition-all">
+            <AnimatePresence mode="popLayout">
+              {interests.map(tag => (
+                <InterestTag key={tag} label={tag} onRemove={() => setInterests(interests.filter(t => t !== tag))} />
+              ))}
+            </AnimatePresence>
             <input 
               type="text"
               placeholder="Add interest..."
@@ -231,25 +249,34 @@ const HomeView = ({ onStart }: { onStart: (interests: string[]) => void }) => {
 
         <button 
           onClick={() => onStart(interests)}
-          className="w-full py-4 bg-tg-blue hover:bg-tg-blue/90 rounded-2xl font-bold text-lg shadow-xl shadow-tg-blue/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+          className="tg-btn w-full text-lg py-3.5 flex items-center justify-center gap-2 group"
         >
-          <MessageSquare className="w-6 h-6" />
+          <MessageSquare className="w-6 h-6 group-hover:scale-110 transition-transform" />
           Start Chatting
         </button>
 
         <div className="grid grid-cols-3 gap-4">
-          <div className="p-4 bg-tg-bg rounded-xl border border-white/5 flex flex-col items-center gap-2">
-            <Shield className="w-5 h-5 text-emerald-500" />
-            <span className="text-xs text-tg-hint">Safe & Secure</span>
-          </div>
-          <div className="p-4 bg-tg-bg rounded-xl border border-white/5 flex flex-col items-center gap-2">
+          <motion.div 
+            whileHover={{ y: -4 }}
+            className="p-5 bg-tg-tertiary rounded-xl border border-tg-border/50 flex flex-col items-center gap-3"
+          >
+            <Shield className="w-5 h-5 text-emerald-400" />
+            <span className="text-xs font-medium text-tg-hint">Safe & Secure</span>
+          </motion.div>
+          <motion.div 
+            whileHover={{ y: -4 }}
+            className="p-5 bg-tg-tertiary rounded-xl border border-tg-border/50 flex flex-col items-center gap-3"
+          >
             <Search className="w-5 h-5 text-tg-blue" />
-            <span className="text-xs text-tg-hint">Interest Match</span>
-          </div>
-          <div className="p-4 bg-tg-bg rounded-xl border border-white/5 flex flex-col items-center gap-2">
-            <User className="w-5 h-5 text-orange-500" />
-            <span className="text-xs text-tg-hint">10k+ Online</span>
-          </div>
+            <span className="text-xs font-medium text-tg-hint">Interest Match</span>
+          </motion.div>
+          <motion.div 
+            whileHover={{ y: -4 }}
+            className="p-5 bg-tg-tertiary rounded-xl border border-tg-border/50 flex flex-col items-center gap-3"
+          >
+            <User className="w-5 h-5 text-cyan-400" />
+            <span className="text-xs font-medium text-tg-hint">10k+ Online</span>
+          </motion.div>
         </div>
       </motion.div>
     </div>
@@ -436,17 +463,22 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
     <div className="h-[calc(100vh-64px)] flex flex-col overflow-hidden bg-tg-bg">
       {/* Search Overlay */}
       {status === 'searching' && (
-        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-tg-bg/90 backdrop-blur-xl">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-tg-bg/95 backdrop-blur-xl"
+        >
           <div className="relative">
             <div className="w-24 h-24 border-4 border-tg-blue border-t-transparent rounded-full animate-spin" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <Search className="w-8 h-8 text-tg-blue" />
+              <Search className="w-8 h-8 text-tg-blue animate-pulse" />
             </div>
           </div>
-          <h3 className="mt-6 text-xl font-bold">Finding someone...</h3>
+          <h3 className="mt-8 text-2xl font-bold">Finding someone...</h3>
           <p className="text-tg-hint text-sm mt-2">Matching based on your interests</p>
-          <button onClick={onExit} className="mt-8 text-tg-blue font-bold hover:underline">Cancel</button>
-        </div>
+          <button onClick={onExit} className="mt-8 px-6 py-2 text-tg-blue font-semibold hover:bg-tg-blue/10 rounded-full transition-colors">Cancel</button>
+        </motion.div>
       )}
 
       {/* Main Content Area */}
@@ -520,85 +552,112 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
         {/* Chat Section */}
         <div className="flex-1 bg-tg-bg flex flex-col relative">
           {/* Chat Header */}
-          <div className="p-4 border-b border-white/5 flex items-center justify-between bg-tg-bg/80 backdrop-blur-md z-10">
+          <div className="p-5 border-b border-tg-border/30 flex items-center justify-between glass z-10">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-tg-blue/20 flex items-center justify-center">
-                <User className="w-6 h-6 text-tg-blue" />
-              </div>
+              <motion.div 
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="w-10 h-10 rounded-full bg-gradient-to-br from-tg-blue/30 to-cyan-400/20 flex items-center justify-center border border-tg-blue/30"
+              >
+                <User className="w-5 h-5 text-tg-blue" />
+              </motion.div>
               <div>
-                <h4 className="font-bold text-sm">Stranger</h4>
-                <p className="text-[10px] text-emerald-500 uppercase font-bold tracking-wider">
-                  Online
-                </p>
+                <h4 className="font-semibold text-sm">Stranger</h4>
+                <motion.p 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-[11px] text-emerald-400 uppercase font-bold tracking-widest"
+                >
+                  ● Online
+                </motion.p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <button 
                 onClick={startVideoCall}
-                className="p-2 hover:bg-white/5 rounded-full text-tg-blue transition-colors"
+                className="p-2.5 hover:bg-tg-blue/15 rounded-full text-tg-blue transition-all hover:text-cyan-400"
+                title="Start video call"
               >
                 <Video className="w-5 h-5" />
               </button>
-              <button className="p-2 hover:bg-white/5 rounded-full text-tg-blue transition-colors">
+              <button className="p-2.5 hover:bg-tg-blue/15 rounded-full text-tg-blue transition-all hover:text-cyan-400" title="Call">
                 <Phone className="w-5 h-5" />
               </button>
-              <button onClick={() => handleSkip()} className="p-2 hover:bg-white/5 rounded-full text-tg-hint transition-colors">
+              <button onClick={() => handleSkip()} className="p-2.5 hover:bg-red-500/10 rounded-full text-tg-hint transition-all hover:text-red-400" title="Skip">
                 <SkipForward className="w-5 h-5" />
               </button>
-              <button className="p-2 hover:bg-white/5 rounded-full text-tg-hint transition-colors">
+              <button className="p-2.5 hover:bg-tg-blue/15 rounded-full text-tg-hint transition-all hover:text-tg-blue" title="More options">
                 <MoreVertical className="w-5 h-5" />
               </button>
             </div>
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] bg-repeat bg-fixed bg-opacity-5">
-            <AnimatePresence initial={false}>
+          <div className="flex-1 overflow-y-auto p-5 space-y-4">
+            <AnimatePresence initial={false} mode="popLayout">
               {messages.map((msg, idx) => (
                 <motion.div
                   key={idx}
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  layout
+                  initial={{ opacity: 0, y: 10, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.2 }}
                   className={cn(
-                    "max-w-[85%] p-3 rounded-2xl text-sm shadow-sm relative",
+                    "max-w-[75%] md:max-w-[60%] px-4 py-2.5 rounded-2xl text-sm shadow-lg relative",
                     msg.senderId === userId.current 
-                      ? "bg-tg-blue text-white ml-auto rounded-tr-none" 
-                      : "bg-tg-secondary text-tg-text mr-auto rounded-tl-none"
+                      ? "bg-gradient-to-r from-tg-blue to-cyan-400 text-tg-bg ml-auto rounded-tr-none font-medium shadow-tg-blue/30" 
+                      : "bg-tg-tertiary text-tg-text mr-auto rounded-tl-none border border-tg-border/50"
                   )}
                 >
                   {msg.message}
-                  <div className="flex items-center justify-end gap-1 mt-1">
-                    <span className="text-[10px] opacity-50">
+                  <div className="flex items-center justify-end gap-1 mt-1 text-xs opacity-70">
+                    <span>
                       {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
-                    {msg.senderId === userId.current && <Check className="w-3 h-3 opacity-50" />}
+                    {msg.senderId === userId.current && <Check className="w-3 h-3" />}
                   </div>
                 </motion.div>
               ))}
             </AnimatePresence>
             {peerTyping && (
-              <div className="bg-tg-secondary text-tg-hint text-xs p-2 rounded-xl w-fit animate-pulse flex items-center gap-2">
-                <div className="flex gap-1">
-                  <div className="w-1 h-1 bg-tg-hint rounded-full animate-bounce" />
-                  <div className="w-1 h-1 bg-tg-hint rounded-full animate-bounce [animation-delay:0.2s]" />
-                  <div className="w-1 h-1 bg-tg-hint rounded-full animate-bounce [animation-delay:0.4s]" />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-tg-tertiary text-tg-hint text-xs px-4 py-2.5 rounded-2xl w-fit border border-tg-border/50 flex items-center gap-2"
+              >
+                <div className="flex gap-1.5">
+                  <motion.div 
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{ duration: 0.6, repeat: Infinity }}
+                    className="w-1.5 h-1.5 bg-tg-hint rounded-full"
+                  />
+                  <motion.div 
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{ duration: 0.6, repeat: Infinity, delay: 0.1 }}
+                    className="w-1.5 h-1.5 bg-tg-hint rounded-full"
+                  />
+                  <motion.div 
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
+                    className="w-1.5 h-1.5 bg-tg-hint rounded-full"
+                  />
                 </div>
-                Stranger is typing
-              </div>
+                <span className="ml-1">typing</span>
+              </motion.div>
             )}
             <div ref={chatEndRef} />
           </div>
 
           {/* Chat Input */}
-          <div className="p-4 bg-tg-bg">
-            <div className="max-w-4xl mx-auto flex items-end gap-2 bg-tg-secondary rounded-2xl p-2 border border-white/5 shadow-lg">
-              <button className="p-2 text-tg-hint hover:text-tg-blue transition-colors">
-                <Paperclip className="w-6 h-6" />
+          <div className="p-5 bg-tg-bg border-t border-tg-border/30">
+            <div className="flex items-end gap-3 bg-tg-tertiary rounded-2xl px-3 py-2 border border-tg-border/50 focus-within:border-tg-blue/50 transition-all shadow-lg">
+              <button className="p-2.5 text-tg-hint hover:text-tg-blue transition-colors hover:bg-tg-blue/10 rounded-lg" title="Attach file">
+                <Paperclip className="w-5 h-5" />
               </button>
               <textarea
                 rows={1}
-                placeholder="Write a message..."
-                className="flex-1 bg-transparent outline-none py-2 text-sm resize-none max-h-32"
+                placeholder="Type a message..."
+                className="flex-1 bg-transparent outline-none py-2 text-sm resize-none max-h-32 placeholder-tg-hint/50"
                 value={inputText}
                 onChange={(e) => {
                   setInputText(e.target.value);
@@ -611,19 +670,22 @@ const ChatView = ({ interests, onExit }: { interests: string[]; onExit: () => vo
                   }
                 }}
               />
-              <button className="p-2 text-tg-hint hover:text-tg-blue transition-colors">
-                <Sticker className="w-6 h-6" />
+              <button className="p-2.5 text-tg-hint hover:text-tg-blue transition-colors hover:bg-tg-blue/10 rounded-lg" title="Emoji">
+                <Sticker className="w-5 h-5" />
               </button>
-              <button 
+              <motion.button 
                 onClick={handleSendMessage}
                 disabled={!inputText.trim()}
+                whileHover={inputText.trim() ? { scale: 1.05 } : {}}
+                whileTap={inputText.trim() ? { scale: 0.95 } : {}}
                 className={cn(
-                  "p-2 rounded-full transition-all",
-                  inputText.trim() ? "bg-tg-blue text-white" : "text-tg-hint"
+                  "p-2.5 rounded-lg transition-all",
+                  inputText.trim() ? "bg-gradient-to-r from-tg-blue to-cyan-400 text-tg-bg shadow-lg shadow-tg-blue/30" : "text-tg-hint"
                 )}
+                title={inputText.trim() ? "Send message" : "Send voice"}
               >
-                {inputText.trim() ? <Send className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
-              </button>
+                {inputText.trim() ? <Send className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+              </motion.button>
             </div>
           </div>
         </div>
@@ -640,60 +702,85 @@ const AdminDashboard = ({ onClose }: { onClose: () => void }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 bg-tg-bg flex items-center justify-center p-6">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 bg-tg-bg/80 backdrop-blur-lg flex items-center justify-center p-6"
+    >
       <motion.div 
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="w-full max-w-4xl bg-tg-secondary rounded-3xl overflow-hidden shadow-2xl border border-white/5"
+        initial={{ scale: 0.85, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="w-full max-w-5xl bg-tg-secondary rounded-2xl overflow-hidden shadow-2xl border border-tg-border/50"
       >
-        <div className="p-6 border-b border-white/5 flex items-center justify-between bg-tg-bg/50">
+        <div className="p-6 border-b border-tg-border/30 flex items-center justify-between bg-gradient-to-r from-tg-blue/10 to-cyan-400/5">
           <div className="flex items-center gap-3">
-            <LayoutDashboard className="w-6 h-6 text-tg-blue" />
-            <h2 className="text-xl font-bold">Admin Dashboard</h2>
+            <div className="p-2 bg-tg-blue/20 rounded-lg">
+              <LayoutDashboard className="w-5 h-5 text-tg-blue" />
+            </div>
+            <h2 className="text-2xl font-bold">Admin Dashboard</h2>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full">
+          <motion.button 
+            whileHover={{ rotate: 90 }}
+            onClick={onClose} 
+            className="p-2 hover:bg-red-500/10 rounded-full transition-colors"
+          >
             <X className="w-6 h-6" />
-          </button>
+          </motion.button>
         </div>
         
         <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="tg-card bg-tg-bg border border-white/5 space-y-2">
-            <p className="text-tg-hint text-sm uppercase font-bold tracking-widest">Total Users</p>
-            <p className="text-4xl font-bold text-tg-blue">{stats.users}</p>
-          </div>
-          <div className="tg-card bg-tg-bg border border-white/5 space-y-2">
-            <p className="text-tg-hint text-sm uppercase font-bold tracking-widest">Active Reports</p>
-            <p className="text-4xl font-bold text-red-500">{stats.reports}</p>
-          </div>
-          <div className="tg-card bg-tg-bg border border-white/5 space-y-2">
-            <p className="text-tg-hint text-sm uppercase font-bold tracking-widest">Online Now</p>
-            <p className="text-4xl font-bold text-emerald-500">{stats.online}</p>
-          </div>
+          {[
+            { label: 'Total Users', value: stats.users, color: 'from-tg-blue to-cyan-400' },
+            { label: 'Active Reports', value: stats.reports, color: 'from-red-500 to-orange-500' },
+            { label: 'Online Now', value: stats.online, color: 'from-emerald-400 to-teal-500' }
+          ].map((stat, i) => (
+            <motion.div 
+              key={i}
+              whileHover={{ y: -4 }}
+              className="tg-card bg-gradient-to-br from-tg-tertiary to-tg-secondary space-y-3"
+            >
+              <p className="text-tg-hint text-xs uppercase font-bold tracking-wider">{stat.label}</p>
+              <p className={`text-5xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+                {stat.value}
+              </p>
+            </motion.div>
+          ))}
         </div>
 
         <div className="p-8 pt-0">
-          <div className="tg-card bg-tg-bg border border-white/5">
-            <h3 className="font-bold mb-4">Recent Reports</h3>
+          <div className="tg-card bg-gradient-to-br from-tg-tertiary to-tg-secondary">
+            <h3 className="font-bold mb-5 text-lg flex items-center gap-2">
+              <Shield className="w-5 h-5 text-red-400" />
+              Recent Reports
+            </h3>
             <div className="space-y-3">
               {[1, 2, 3].map(i => (
-                <div key={i} className="flex items-center justify-between p-3 bg-tg-secondary rounded-xl border border-white/5">
+                <motion.div 
+                  key={i}
+                  whileHover={{ x: 4 }}
+                  className="flex items-center justify-between p-4 bg-tg-secondary rounded-xl border border-tg-border/50 hover:border-red-500/30 transition-colors"
+                >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center">
-                      <Shield className="w-4 h-4 text-red-500" />
+                    <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center border border-red-500/30">
+                      <Shield className="w-5 h-5 text-red-400" />
                     </div>
                     <div>
                       <p className="text-sm font-medium">Inappropriate behavior</p>
-                      <p className="text-[10px] text-tg-hint">User ID: user_8273... • 2 mins ago</p>
+                      <p className="text-xs text-tg-hint">User ID: user_8273... • 2 mins ago</p>
                     </div>
                   </div>
-                  <button className="text-xs font-bold text-tg-blue hover:underline">View Details</button>
-                </div>
+                  <button className="text-xs font-semibold text-tg-blue hover:bg-tg-blue/10 px-3 py-1.5 rounded-lg transition-colors">
+                    View
+                  </button>
+                </motion.div>
               ))}
             </div>
           </div>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 
